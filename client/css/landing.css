@@ -1,0 +1,117 @@
+.main-heading {
+  font-family: sf_pro;
+  font-size: 50px;
+  color: #626262;
+  margin-top: 5%;
+}
+
+.main-text {
+  font-family: sf_pro;
+  font-size: 25px;
+  margin-top: 10%;
+  margin-bottom: 8%;
+  font-style: italic;
+  color: #626262;
+  width: 80%;
+}
+
+.main-image {
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+}
+
+.main-image img {
+  width: 100%;
+  margin-top: -25%;
+}
+
+.onboard-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 150;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+}
+
+.onboard-content {
+  height: auto;
+  width: 60%;
+  background: white;
+  margin: 0 auto;
+  position: relative;
+}
+
+.onboard-content ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 20px;
+}
+
+.onboard-content ul li {
+  display: inline-block;
+  border-right: 2px solid #626262;
+  padding: 10px;
+  font-family: sf_pro;
+  font-size: 40px;
+  color: #626262;
+}
+
+form {
+  text-align: center;
+}
+
+#register-form {
+  display: none;
+}
+
+#login-form {
+  display: block;
+}
+
+.form-group {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.form-control {
+  padding: 10px 20px;
+  border: 0.5px solid #626262;
+  font-size: 25px;
+  margin: 2% 0;
+  width: 100%;
+}
+
+[type = "submit"] {
+  font-family: sf_pro;
+  background: #626262;
+  padding: 2% 10%;
+  color: white;
+  font-size: 20px;
+  margin-top: 3%;
+  margin-bottom: 7%;
+}
+.onboard-content ul li:last-child {
+  border: none;
+}
+
+::placeholder {
+  font-family: sf_pro;
+  font-size: 25px;
+}
+
+.head-list li {
+  cursor: pointer;
+}
+
+.close {
+  position :absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 30px;
+  cursor: pointer;
+}
