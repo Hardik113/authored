@@ -9,6 +9,9 @@ const bookSchema = new Schema({
   rating: { type: Number, enum: [0, 1, 2, 3, 4, 5], defalut: 0, required: true },
   book_image: { type: String },
   likes: { type: Number, default: 0 },
+  views: { type: Number, default: 0 },
 }, { timestamps: true });
+
+bookSchema.index({ name: 'text' });
 
 module.exports = mongoose.model('book', bookSchema);
