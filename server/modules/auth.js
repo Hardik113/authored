@@ -1,10 +1,10 @@
 const Promise = require('bluebird');
 
-function authorize(session, entity, command) {
+function authorize(session) {
   return new Promise((resolve, reject) => {
     if (session.is_logged_in) {
-        return resolve();
-      }
+      return resolve();
+    }
     reject({ status: 401, data: { message: 'You are not logged In' } });
   });
 }
