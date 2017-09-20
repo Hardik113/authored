@@ -25,7 +25,7 @@
 }
 
 .channel-create-content {
-  margin-top: 10%;
+  margin-top: 2%;
 }
 
 .image-container {
@@ -47,7 +47,6 @@
 }
 
 .image-sub-container img {
-  
   width: 100%;
 }
 
@@ -55,10 +54,8 @@
   display: inline-block;
   vertical-align: top;
   border-left: 1px solid lightgray;
-  \\border-right: 1px solid lightgray;
-  padding: 5%;
+  padding: 1% 5%;
   width: 30%;
-    
 }
 
 .form-group {
@@ -112,10 +109,6 @@ select {
   color: black;
 }
 
-.submit-container {
-  margin-top: -7%;
-    margin-left: 30%;
-}
 
 .submit-container-content {
   text-align: center;
