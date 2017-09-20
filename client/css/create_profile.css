@@ -53,6 +53,8 @@
   vertical-align: top;
   border-left: 1px solid lightgray;
   padding: 5%;
+  padding-top: 0;
+  padding-bottom: 0;
   width: 30%;
     
 }
