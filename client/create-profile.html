@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Authored</title>
     <link href = "css/index.css" rel = "stylesheet" type = "text/css">
-    <link href = "css/create_channel.css" rel = "stylesheet" type = "text/css">
+    <link href = "css/create_profile.css" rel = "stylesheet" type = "text/css">
     <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
   </head>
   <body>
@@ -37,9 +37,9 @@
     </div>
     <img class = "symbol" src = "resources/authored.png">
     <div class = "main-page">
-      <div class = "main-page-content">
-        <div class = "header-content">
-          <h1 class = "main-heading">Create Channel</h1>
+      <div style = "text-align:center" class = "main-page-content">
+        <div style = "text-align:left" class = "header-content">
+          <h1 class = "main-heading">Create Profile</h1>
         </div>
         <div class = "channel-create-content">
           <div class = "image-container">
@@ -48,7 +48,7 @@
             </div>
             <p><i class = "fa fa-camera fa-lg"></i> Edit Picture</p>
           </div>
-          <div class = "form-container">
+          <div style = "text-align: left" class = "form-container">
             <form>
               <div class = "form-group">
                 <label>First Name</label><br>
@@ -70,7 +70,11 @@
                 <label>Age</label><br>
                 <input class = "form-control" type = "number" name = "age">
               </div>
-                <div class = "form-group">
+              <div class = "form-group">
+                <label>Description</label><br>
+                <textarea name = "description" rows = "5" cols = "3"></textarea>
+              </div>
+              <div class = "form-group">
                 <label>Website</label><br>
                 <input class = "form-control" type = "text" name = "website">
               </div>
@@ -80,13 +84,10 @@
                 <input style = "margin-left:10px" type = "radio" name = "type"><span class = "radio-text" value = "public">&nbsp;Female</span><input style = "margin-left:10px" type = "radio" name = "type"><span class = "radio-text" value = "public">&nbsp;Other</span>
               </div>
             </form>
+            <p class = "submit-container-content">By Clicking submit you agree to our terms and conditions</p>
+            <button id = "submit" type = "submit">Submit</button>
           </div>
-          <div class = "submit-container">
-            <div class = "submit-container-content">
-              <p>By Clicking submit you agree to our terms and conditions</p>
-              <button id = "submit" type = "submit">Submit</button>
-            </div>
-          </div>
+        </div>
         </div>
     </div>
   </body>

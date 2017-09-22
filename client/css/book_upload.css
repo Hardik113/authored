@@ -1,0 +1,132 @@
+.main-heading {
+  font-family: sf_pro;
+  font-size: 60px;
+  color: #626262;
+  margin-top: 4%;
+  display: inline-block;
+}
+
+.main-text {
+  font-family: sf_pro;
+  font-size: 25px;
+  margin-top: 7%;
+  margin-bottom: 10%;
+  font-style: italic;
+  color: #626262;
+  width: 60%;
+}
+
+.symbol {
+  height: 15%;
+  width: auto;
+  position: absolute;
+  right: 5%;
+  top: 8%;
+}
+
+.channel-create-content {
+  margin-top: 2%;
+}
+
+.image-container {
+  padding: 5%;
+  text-align: center;
+  width: 15%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.image-container p {
+  font-family: sf_pro;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.image-sub-container {
+  width: 100%;
+}
+
+.image-sub-container img {
+  width: 100%;
+}
+
+.form-container {
+  display: inline-block;
+  vertical-align: top;
+  border-left: 1px solid lightgray;
+  padding: 1% 5%;
+  width: 30%;
+}
+
+.form-group {
+  padding: 2%;
+  width: 100%;
+}
+
+.form-group label {
+  font-family: sf_pro;
+  font-size: 17px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  padding: 3px;
+  font-size: 14px;
+  font-family: sf_pro;
+  color: black;
+  background: #f4f4f4;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  width: 90%;
+}
+
+textarea {
+    font-size: 14px;
+    font-family: sf_pro;
+    color: black;
+    width: 800px;
+    height: 400px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 4px;
+    background-color: #f4f4f4;
+    font-size: 16px;
+    resize: none;
+}
+
+select {
+  background: #f4f4f4;
+  border: none;
+  outline: none;
+}
+
+.radio-text {
+  font-size: 14px;
+  font-family: sf_pro;
+  color: black;
+}
+
+
+.submit-container-content {
+  text-align: center;
+  padding: 3%;
+}
+
+.submit-container-content p {
+  font-family: sf_pro;
+  font-size: 15px;
+  color: black;
+}
+
+#submit {
+  padding: 10px;
+  font-family: sf_pro;
+  color: white;
+  font-size: 20px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+}
