@@ -1,0 +1,201 @@
+.main-page-row {
+  width: 100%;
+  margin-bottom: 3%;
+  position: relative;
+}
+
+.main-page-row h2 {
+  font-family: sf_pro;
+  font-style: italic;
+  font-size: 40px;
+  color: #626262;
+  margin-top: 3%;
+}
+
+.row-container {
+  width: 100%;
+  margin-top: 2%;
+  overflow: hidden;
+}
+
+.row-container-list {
+  width: 85%;
+  margin-top: 2%;
+  overflow: hidden;
+}
+
+.row-content {
+  width: 200%;
+}
+
+.row-content-list {
+  width: 100%;
+}
+
+.row-box {
+  max-width: 200px;
+  display: inline-block;
+  margin-right: 40px;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+}
+
+.row-box:first-child {
+  margin-left: 0;
+}
+
+.channel-cover {
+  position: relative;
+  width: auto;
+  text-align: center;
+}
+
+.channel-cover img {
+  width: 70%;
+  border-radius: 50%;
+}
+
+.channel-content {
+  width: 94%;
+  padding: 1%;
+  color: white;
+  text-align: center;
+}
+
+.channel-name {
+  font-family: sf_pro_reg;
+  font-size: 20px;
+  color: black;
+  font-weight: bold;
+}
+
+.small-text {
+  font-size: 12px;
+  font-size: sf_pro;
+}
+
+.views {
+  font-size: 14px;
+  font-family: sf_pro;
+  color: #626262;
+  display: inline;
+  margin-left: 5%;
+}
+
+.rating-box {
+  margin: -5% 0;
+}
+
+.likes {
+  font-size: 14px;
+  font-family: sf_pro;
+  color: #626262;
+  display: inline;
+}
+
+.star-rating {
+  padding: 0;
+  list-style-type: none;
+}
+
+.star-rating li {
+  font-size: 15px;
+  display: inline-block;
+  color: #626262;
+}
+
+.main-heading {
+  font-family: sf_pro;
+  font-size: 60px;
+  color: #626262;
+  margin-top: 7%;
+  display: inline-block;
+}
+
+.main-text {
+  font-family: sf_pro;
+  font-size: 25px;
+  margin-top: 7%;
+  margin-bottom: 10%;
+  font-style: italic;
+  color: #626262;
+  width: 60%;
+}
+
+.utility-box {
+  display: inline-block;
+  padding: 0;
+  list-style-type: none;
+  margin: 0 2%;
+  transform: translateY(-10px);
+  width: auto;
+}
+
+.utility-box li {
+  display: inline-block;
+  border-radius: 50%;
+  background: lightgray;
+  padding: 20px;
+  margin: 0 10px;
+}
+
+/* Sorting Utility */
+
+.sorting-utility{
+  padding: 20px;
+  display: inline-block;
+  position: absolute;
+  right: 10%;
+  top: 0%;
+}
+
+.sorting-utility h4 {
+  font-family: sf_pro;
+  font-size: 25px;
+  font-style: italic;
+  font-weight: bold;
+  color: #626262;
+}
+
+.sorting-utility h4 i {
+  font-size: 25px;
+  font-stretch: wider;
+}
+
+.sorting-utility ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sorting-utility ul li {
+  font-size: 20px;
+  font-family: sf_pro;
+  font-style: italic;
+  margin: 10px 0;
+}
+
+/* Sorting Utility end */
+
+.channel-stats {
+  padding: 0;
+  list-style-type: none;
+  margin: 5% 0;
+}
+
+.channel-stats li {
+  display: inline-block;
+  margin: 0 10%;
+}
+
+.channel-stats li p {
+  font-family: sf_pro;
+  font-style: italic;
+  margin: 1% 0;
+}
+.stats-number {
+  font-size: 40px;
+}
+
+.stats-text {
+  font-size: 35px;
+}

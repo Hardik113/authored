@@ -1,0 +1,102 @@
+{
+  "test": {
+    "db": {
+      "host": "mongodb://localhost/help_full_test",
+      "options": {
+        "poolSize": 10,
+        "useMongoClient": true,
+        "reconnectTries": 100
+      }
+    },
+    "secret": "This is my secret",
+    "resetLink": "http://localhost:3000/users/reset-password",
+    "admin_invite_link": "http://localhost:3000/admin/invite/",
+    "create_member_profile_link": " ",
+    "SENDGRID_API": "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",
+    "s3": {
+      "access_key_id": "AKIAI2OQAOSH55R6OOOA",
+      "access_key_secret": "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",
+      "bucket": "dev-media.help-full.com"
+    },
+    "cdn": "https://d33fisg4tof3bz.cloudfront.net/",
+    "redis": {
+      "host": "localhost",
+      "port": 6379
+    },
+    "ui": {
+      "host": "http://localhost:3000/"
+    }
+  },
+  "localhost": {
+    "db": {
+      "host": "mongodb://localhost:27017/authored",
+      "options": {
+        "poolSize": 10,
+        "useMongoClient": true,
+        "reconnectTries": 100
+      }
+    },
+    "google": {
+      "CLIENT_ID": "681197906226-s93nej231le5jd248sgqj4q38map0i7l.apps.googleusercontent.com",
+      "CLIENT_SECRET": "4KQjkeTVx3jy-vEpVtRfuE4d",
+      "link": "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
+    },
+    "facebook": {
+      "APP_ID": "106862956651505",
+      "APP_SECRET": "7cf3c46c05c95bad1e18f44c927b714b",
+      "link": "https://graph.facebook.com/me?access_token="
+    },
+    "secret": "This is my secret",
+    "resetLink": "http://localhost:3000/users/reset-password",
+    "create_member_profile_link": " ",
+    "SENDGRID_API": "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",
+    "s3": {
+      "access_key_id": "AKIAI2OQAOSH55R6OOOA",
+      "access_key_secret": "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",
+      "bucket": "dev-media.help-full.com"
+    },
+    "cdn": "https://d33fisg4tof3bz.cloudfront.net/",
+    "redis": {
+      "host": "localhost",
+      "port": 6379
+    },
+    "ui": {
+      "host": "http://localhost:3000/"
+    }
+  },
+  "dev": {
+    "db": {
+      "host": "mongodb://54.173.2.82/help_full",
+      "options": {
+        "poolSize": 10,
+        "useMongoClient": true,
+        "reconnectTries": 100
+      }
+    },
+    "google": {
+      "CLIENT_ID": "681197906226-s93nej231le5jd248sgqj4q38map0i7l.apps.googleusercontent.com",
+      "CLIENT_SECRET": "4KQjkeTVx3jy-vEpVtRfuE4d",
+      "link": "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
+    },
+    "facebook": {
+      "APP_ID": "106862956651505",
+      "APP_SECRET": "7cf3c46c05c95bad1e18f44c927b714b",
+      "link": "https://graph.facebook.com/me?access_token="
+    },
+    "secret": "This is my secret",
+    "SENDGRID_API": "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",
+    "s3": {
+      "access_key_id": "AKIAI2OQAOSH55R6OOOA",
+      "access_key_secret": "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",
+      "bucket": "dev-media.help-full.com"
+    },
+    "cdn": "https://d33fisg4tof3bz.cloudfront.net/",
+    "redis": {
+      "host": "dev-redis.vvvbb0.0001.use1.cache.amazonaws.com",
+      "port": 6379
+    },
+    "ui": {
+      "host": "http://localhost:3000/"
+    }
+  }
+}
