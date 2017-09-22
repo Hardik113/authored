@@ -7,9 +7,9 @@ const userSchema = new Schema({
   last_name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  age: { type: Number, required: true },
+  age: { type: Number },
   website: { type: String },
-  gender: { type: String, required: true, enum: ['male', 'female', 'other'] },
+  gender: { type: String, enum: ['male', 'female', 'other'] },
   status: {
     type: String,
     enum: ['active', 'inactive', 'new'],
