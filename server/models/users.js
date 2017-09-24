@@ -21,4 +21,6 @@ const userSchema = new Schema({
   my_favourite: [{ type: Schema.Types.ObjectId, ref: 'book' }],
 }, { timestamps: true });
 
+userSchema.index({ name: 'text' });
+
 module.exports = mongoose.model('user', userSchema);

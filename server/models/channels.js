@@ -11,8 +11,10 @@ const channelSchema = new Schema({
   channel_image: { type: String },
   book_list: [{ type: Schema.Types.ObjectId, ref: 'book' }],
   creator: { type: Schema.Types.ObjectId, ref: 'user' },
-  likes: { type: Number, required: true, default: 0 },
-  views: { type: Number, required: true, default: 0 },
+  likes: { type: Number, default: 0 },
+  views: { type: Number, default: 0 },
 }, { timestamps: true });
+
+channelSchema.index({ name: 'text' });
 
 module.exports = mongoose.model('channel', channelSchema);

@@ -28,7 +28,7 @@ function getUser(id) {
   });
 }
 
-module.exports = function () {
+module.exports = () => {
   return (req, res, next) => {
     req.session = {
       user: {
@@ -57,7 +57,8 @@ module.exports = function () {
           return next();
         })
         .catch((error) => {
-          res.status(498).send({ message: 'Invalid Token' });
+          console.log(error);
+          res.status(error.status).send({ data: { message: error.message } });
         });
     });
   };

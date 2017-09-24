@@ -10,6 +10,8 @@ const sessions = require('./modules/sessions');
 
 // const index = require('./routes/index');
 const users = require('./routes/users');
+const books = require('./routes/books');
+const channels = require('./routes/channels');
 
 const app = express();
 db();
@@ -27,6 +29,8 @@ app.use(sessions());
 app.use(fileParser());
 
 app.use('/users', users);
+app.use('/books', books);
+app.use('/channels', channels);
 
 
 // catch 404 and forward to error handler
