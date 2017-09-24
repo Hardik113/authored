@@ -14,9 +14,23 @@ router.get('/', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
+
+router.post('/add_like/:channel_id', (req, res) => {
+  Auth.authorize(req.session)
+    .then(() => {
+      return ChannelController.addLike(req);
+    })
+    .then((result) => {
+      res.status(200).send(result.data);
+    })
+    .catch((error) => {
+      res.status(error.status).send(error.data);
+    });
+});
+
 router.get('/:channel_id', (req, res) => {
   Auth.authorize(req.session)
     .then(() => {
@@ -26,7 +40,7 @@ router.get('/:channel_id', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
 
@@ -39,7 +53,7 @@ router.post('/create', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
 
@@ -52,7 +66,7 @@ router.put('/:channel_id', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
 
@@ -65,21 +79,35 @@ router.delete('/:channel_id', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
 
-router.post('/addLike/:channel_id', (req, res) => {
+router.post('/addBook/:channel_id', (req, res) => {
   Auth.authorize(req.session)
     .then(() => {
-      return ChannelController.addLike(req);
+      return ChannelController.addBook(req);
     })
     .then((result) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
+
+router.post('/delBook/:channel_id', (req, res) => {
+  Auth.authorize(req.session)
+    .then(() => {
+      return ChannelController.deleteBook(req);
+    })
+    .then((result) => {
+      res.status(200).send(result.data);
+    })
+    .catch((error) => {
+      res.status(error.status).send(error.data);
+    });
+});
+
 
 module.exports = router;

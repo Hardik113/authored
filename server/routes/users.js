@@ -4,19 +4,57 @@ const Auth = require('../modules/auth');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+// router.get('/list', (req, res) => {
+//   Auth.authorize(req.session)
+//     .then(() => {
+//       return UserController.listUsers(req.query);
+//     })
+//     .then((result) => {
+//       res.status(result.status || 200).send(result.data);
+//     })
+//     .catch((error) => {
+//       res.status(error.status).send(error.data);
+//     });
+// });
+
+router.get('/me', (req, res) => {
   Auth.authorize(req.session)
     .then(() => {
-      return UserController.listUsers(req.query);
+      return UserController.me(req);
     })
     .then((result) => {
-      res.status(result.status || 200).send(result.data);
+      res.status(200 || result.status).send(result.data);
     })
     .catch((error) => {
       res.status(error.status).send(error.data);
     });
 });
 
+router.post('/add_favourite', (req, res) => {
+  Auth.authorize(req.session)
+    .then(() => {
+      return UserController.addFavourite(req);
+    })
+    .then((result) => {
+      res.status(200).send(result.data);
+    })
+    .catch((error) => {
+      res.status(error.status).send(error.message);
+    });
+});
+
+router.get('/:user_id', (req, res) => {
+  Auth.authorize(req.session)
+    .then(() => {
+      return UserController.getUser(req);
+    })
+    .then((result) => {
+      res.status(200).send(result.data);
+    })
+    .catch((error) => {
+      res.status(error.status).send(error.message);
+    });
+});
 
 router.post('/login', (req, res) => {
   UserController.login(req)
@@ -90,10 +128,10 @@ router.post('/profile-image', (req, res) => {
 });
 
 
-router.get('/me', (req, res) => {
+router.post('/makeProfile', (req, res) => {
   Auth.authorize(req.session)
     .then(() => {
-      return UserController.me(req);
+      return UserController.makeProfile(req);
     })
     .then((result) => {
       res.status(200 || result.status).send(result.data);
@@ -103,4 +141,16 @@ router.get('/me', (req, res) => {
     });
 });
 
+router.delete('/:user_id', (req, res) => {
+  Auth.authorize(req.session)
+    .then(() => {
+      return UserController.remove(req);
+    })
+    .then((result) => {
+      res.status(200 || result.status).send(result.data);
+    })
+    .catch((error) => {
+      res.status(error.status).send(error.data);
+    });
+});
 module.exports = router;

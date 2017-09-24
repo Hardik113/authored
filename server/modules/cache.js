@@ -13,3 +13,8 @@ exports.setValue = function setValue(key, value) {
 exports.getValue = function getValue(key) {
   return client.getAsync(key);
 };
+
+exports.clear = function clear(id) {
+  const key = `USER_${id}`;
+  client.del(key);
+};

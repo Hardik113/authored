@@ -14,9 +14,10 @@ router.get('/', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
+
 router.get('/:book_id', (req, res) => {
   Auth.authorize(req.session)
     .then(() => {
@@ -26,7 +27,7 @@ router.get('/:book_id', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
 
@@ -39,7 +40,7 @@ router.post('/create', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
 
@@ -52,7 +53,7 @@ router.put('/:book_id', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
 
@@ -65,7 +66,7 @@ router.delete('/:book_id', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
 
@@ -78,7 +79,7 @@ router.post('/addLike/:book_id', (req, res) => {
       res.status(200).send(result.data);
     })
     .catch((error) => {
-      res.status(error.status).send(error.message);
+      res.status(error.status).send(error.data);
     });
 });
 

@@ -1,6 +1,7 @@
 const Promise = require('bluebird');
 
 const Book = require('../models/books');
+const User = require('../models/users');
 
 
 function find(bookName) {
@@ -45,8 +46,11 @@ function addBook(req) {
             reject({ status: 422, message: err.message });
             return false;
           }
-          resolve({ status: 200, data: { message: 'Book Created' } });
         });
+        return User.update({ _id: req.session.user._id }, { $push: { my_publishing: book._id } });
+      })
+      .then(() => {
+        resolve({ status: 200, data: { message: 'Book added' } });
       })
       .catch((error) => {
         reject({ status: error.status, data: { message: error.message } });
@@ -60,7 +64,7 @@ function getBook(req) {
       reject({ status: 400, data: { message: 'Invalid Request' } });
       return false;
     }
-    get(req.params._id)
+    get(req.params.book_id)
       .then((result) => {
         if (!result) {
           reject({ status: 400, data: { message: 'Book not found' } });
@@ -101,8 +105,14 @@ function deleteBook(req) {
         reject({ status: 422, message: err.message });
         return false;
       }
-      resolve({ status: 200, data: { message: 'Book Removed' } });
-    });
+      return User.update({ _id: req.session.user._id }, { $pull: { my_publishing: req.params.book_id } });
+    })
+      .then(() => {
+        resolve({ status: 200, data: { message: 'Book Removed' } });
+      })
+      .catch((error) => {
+        reject({ status: error.status, data: { message: error.message } });
+      });
   });
 }
 
@@ -145,8 +155,15 @@ function list(query) {
     if (query.filter === 'views' || query.filter === 'likes') {
       filter = `-${query.filter}`;
     }
-
-    Book.find({ $text: { $search: query.search } })
+    let search = {};
+    if (query.search) {
+      search = {
+        $text: {
+          $search: query.search,
+        },
+      };
+    }
+    Book.find(search)
       .sort(filter)
       .skip(start)
       .limit(limit)

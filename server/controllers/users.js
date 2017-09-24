@@ -8,10 +8,11 @@ const config = require('../modules/config');
 const mailer = require('../modules/mailer');
 const utils = require('../modules/utils');
 const fileHandler = require('../modules/file-handler');
+const cache = require('../modules/cache');
 
 const services = {};
 
-function getUser(query) {
+function find(query) {
   return new Promise((resolve, reject) => {
     User.find(query, (err, result) => {
       if (err) {
@@ -22,7 +23,7 @@ function getUser(query) {
   });
 }
 
-function findUser(_id) {
+function get(_id) {
   return new Promise((resolve, reject) => {
     User.findById(_id, (err, user) => {
       if (err) {
@@ -62,7 +63,7 @@ function getEmailInfo(user) {
     subject: 'Welcome to Authored!!',
     data: {
       name: user.name,
-      link: `${config.ui.host}onboarding?token=${jwt.sign({ _id: user._id, type: '' }, config.secret, { expiresIn: '1d' })}`,
+      link: `${config.ui.host}onboarding?token=${jwt.sign({ _id: user._id, type: 'login' }, config.secret, { expiresIn: '1d' })}`,
     },
   };
   return emailInfo;
@@ -101,7 +102,7 @@ function login(req) {
     } else {
       query.user_name = req.body.user_name;
     }
-    getUser(query)
+    find(query)
       .then((result) => {
         if (!result.length) {
           return reject({ status: 404, data: { message: 'user not found' } });
@@ -140,7 +141,7 @@ function register(req) {
     }
     const query = {};
     query.email = req.body.email;
-    getUser(query)
+    find(query)
       .then((result) => {
         if (result.length) {
           return Promise.reject({ status: 409, message: 'user already exists' });
@@ -154,7 +155,7 @@ function register(req) {
         const emailInfo = getEmailInfo(user);
         mailer(emailInfo)
           .then((ret) => {
-            resolve({ status: 200, data: { _id: user._id, message: ret.message } });
+            resolve({ status: 200, data: { user_id: user._id, message: ret.message } });
           })
           .catch((error) => {
             reject({ status: 400, data: { message: error.message } });
@@ -168,21 +169,18 @@ function register(req) {
 
 function updateProfile(req) {
   return new Promise((resolve, reject) => {
-    findUser(req.session.user._id)
-      .then((user) => {
-        const packet = Packet.makeUserPacket(req.body);
-        User.findByIdAndUpdate(user._id, packet, { new: true }, (err) => {
-          if (err) {
-            reject({ status: 422, data: { message: err.message } });
-            return false;
-          }
-          resolve({ status: 200, data: { message: 'member updated' } });
-        });
-      })
-      .catch((error) => {
-        reject({ status: error.status, data: { message: error.message } });
+    User.update({ _id: req.session.user._id }, { $set: req.body }, (err, res) => {
+      if (err) {
+        reject({ status: 422, data: { message: err.message } });
         return false;
-      });
+      }
+      if (res.n === 0) {
+        reject({ status: 404, data: { message: 'User not found' } });
+        return false;
+      }
+      cache.clear(req.session.user._id);
+      resolve({ status: 200, data: { message: 'user updated' } });
+    });
   });
 }
 
@@ -218,64 +216,140 @@ function me(req) {
   });
 }
 
-function listUsers(query) {
+// function listUsers(query) {
+//   return new Promise((resolve, reject) => {
+//     const allowedType = ['member', 'helper'];
+//     const allowedStatus = ['in_interview', 'in_verification', 'active', 'new', 'rejected'];
+//     let total;
+
+//     if ((query.start) && (isNaN(query.start) || (parseInt(query.start, 10) < 0))) {
+//       reject({ status: 400, data: { message: 'Invalid Request' } });
+//       return false;
+//     }
+//     if ((query.limit) && (isNaN(query.limit) || (parseInt(query.limit, 10) < 0))) {
+//       reject({ status: 400, data: { message: 'Invalid Request' } });
+//       return false;
+//     }
+//     if ((query.type) && (!(allowedType.indexOf(query.type) > -1))) {
+//       reject({ status: 400, data: { message: 'Invalid Request' } });
+//       return false;
+//     }
+//     if ((query.status) && (!(allowedStatus.indexOf(query.status) > -1))) {
+//       reject({ status: 400, data: { message: 'Invalid Request' } });
+//       return false;
+//     }
+
+//     const start = (parseInt(query.start, 10)) ? parseInt(query.start, 10) : 0;
+//     const limit = (parseInt(query.limit, 10)) ? parseInt(query.limit, 10) : 25;
+//     const type = query.type ? [query.type] : allowedType;
+//     const status = query.status ? [query.status] : allowedStatus;
+
+//     // Is required because when the front gives no type or status have to return all records
+//     User.count({ type: { $in: type }, status: { $in: status } }, (err, c) => {
+//       if (err) {
+//         reject({ status: 422, data: { message: err.message } });
+//         return false;
+//       }
+//       total = c;
+//     });
+
+//     User.find({
+//       type: { $in: type },
+//       status: { $in: status },
+//     })
+//       .skip(start)
+//       .limit(limit)
+//       .exec((err, resArr) => {
+//         if (err) {
+//           reject({ status: 422, data: { message: err.message } });
+//           return false;
+//         }
+//         resolve({ status: 200, data: { totalCount: total, count: resArr.length, result: resArr } });
+//       });
+//   });
+// }
+
+function makeProfile(req) {
   return new Promise((resolve, reject) => {
-    const allowedType = ['member', 'helper'];
-    const allowedStatus = ['in_interview', 'in_verification', 'active', 'new', 'rejected'];
-    let total;
-
-    if ((query.start) && (isNaN(query.start) || (parseInt(query.start, 10) < 0))) {
-      reject({ status: 400, data: { message: 'Invalid Request' } });
-      return false;
-    }
-    if ((query.limit) && (isNaN(query.limit) || (parseInt(query.limit, 10) < 0))) {
-      reject({ status: 400, data: { message: 'Invalid Request' } });
-      return false;
-    }
-    if ((query.type) && (!(allowedType.indexOf(query.type) > -1))) {
-      reject({ status: 400, data: { message: 'Invalid Request' } });
-      return false;
-    }
-    if ((query.status) && (!(allowedStatus.indexOf(query.status) > -1))) {
-      reject({ status: 400, data: { message: 'Invalid Request' } });
-      return false;
-    }
-
-    const start = (parseInt(query.start, 10)) ? parseInt(query.start, 10) : 0;
-    const limit = (parseInt(query.limit, 10)) ? parseInt(query.limit, 10) : 25;
-    const type = query.type ? [query.type] : allowedType;
-    const status = query.status ? [query.status] : allowedStatus;
-
-    // Is required because when the front gives no type or status have to return all records
-    User.count({ type: { $in: type }, status: { $in: status } }, (err, c) => {
+    req.body.status = 'active';
+    User.update({ _id: req.session.user._id }, req.body, (err, res) => {
       if (err) {
         reject({ status: 422, data: { message: err.message } });
         return false;
       }
-      total = c;
+      if (res.n !== 1) {
+        reject({ stauts: 404, data: { message: 'User not found' } });
+        return false;
+      }
+      cache.clear(req.session.user._id);
+      resolve({ status: 200, data: { message: 'User profile updated' } });
     });
+  });
+}
 
-    User.find({
-      type: { $in: type },
-      status: { $in: status },
-    })
-      .skip(start)
-      .limit(limit)
-      .exec((err, resArr) => {
-        if (err) {
-          reject({ status: 422, data: { message: err.message } });
+function getUser(req) {
+  return new Promise((resolve, reject) => {
+    if (!req.params.user_id) {
+      reject({ status: 400, data: { message: 'Invalid Request' } });
+      return false;
+    }
+    get(req.params.user_id)
+      .then((result) => {
+        if (!result) {
+          reject({ status: 400, data: { message: 'user not found' } });
           return false;
         }
-        resolve({ status: 200, data: { totalCount: total, count: resArr.length, result: resArr } });
+        resolve({ status: 200, data: result });
+      })
+      .catch((error) => {
+        reject({ status: error.status, data: { message: error.message } });
       });
   });
 }
 
+function removeUser(req) {
+  return new Promise((resolve, reject) => {
+    if (!req.params.user_id) {
+      reject({ status: 400, data: { message: 'Invalid Request' } });
+      return false;
+    }
+    User.findByIdAndRemove(req.params.user_id, (err) => {
+      if (err) {
+        reject({ status: 422, message: err.message });
+        return false;
+      }
+      resolve({ status: 200, data: { message: 'User Removed' } });
+    });
+  });
+}
+
+function addFavourite(req) {
+  return new Promise((resolve, reject) => {
+    if (!req.body.book_id) {
+      reject({ status: 400, data: { message: 'Invalid Request' } });
+      return false;
+    }
+    User.update({ _id: req.session.user._id }, { $push: { my_favourite: req.body.book_id } }, (err, res) => {
+      if (err) {
+        reject({ status: 400, data: { message: 'Invalid Request' } });
+        return false;
+      }
+      if (res.n !== 1) {
+        reject({ status: 404, data: { message: 'User not found' } });
+        return false;
+      }
+      resolve({ status: 200, data: { message: 'Added to favourites' } });
+    });
+  });
+}
 services.login = login;
 services.register = register;
 services.updateProfile = updateProfile;
 services.updateProfileImage = updateProfileImage;
 services.me = me;
-services.listUsers = listUsers;
+services.makeProfile = makeProfile;
+services.getUser = getUser;
+services.removeUser = removeUser;
+services.addFavourite = addFavourite;
 
 module.exports = services;
