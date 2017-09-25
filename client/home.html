@@ -41,7 +41,7 @@
         <div class = "header-content">
           <h1 class = "main-heading">Explore</h1>
           <ul class = "utility-box">
-            <li><i class = "fa fa-search fa-lg"></i></li>
+            <li id = "search-open"><i class = "fa fa-search fa-lg"></i></li>
             <li><i class = "fa fa-pencil fa-lg"></i></li>
           </ul>
           <p class = "main-text">Dive into the mind of our Authors and see the world through their eyes and experience a new age of internet writing. Thoda aur content</p>
@@ -223,7 +223,18 @@
       <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
     </div>
     <div class = "search-container">
-      <input class = "search-box" type = "text" name = "search" placeholder = "Search ...">
+        <span class = "search-close">&times;</span>
+        <h6 id="anything"> Search on your fingertips</h6>
+      <input class = "search-box" type = "text" name = "search" placeholder = "SEARCH">
     </div>
+     <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script>
+        $('.search-close').click(() => {
+           $('.search-container').css('display', 'none');
+        });
+        $('#search-open').click(() => {
+           $('.search-container').css('display', 'block');
+        });
+    </script>
   </body>
 </html>

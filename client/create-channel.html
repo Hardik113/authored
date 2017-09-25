@@ -49,25 +49,25 @@
             <p><i class = "fa fa-camera fa-lg"></i> Edit Picture</p>
           </div>
           <div class = "form-container">
-            <form>
+            <form id="channel">
               <div class = "form-group">
                 <label>Name</label><br>
-                <input class = "form-control" type = "text" name = "channelname">
+                <input class = "form-control" type = "text" name = "channelname" required>
               </div>
               <div class = "form-group">
                 <label>Type</label><br>
                 <input type = "radio" name = "type"><span class = "radio-text" value = "private">&nbsp;Private</span>
-                <input style = "margin-left:10px" type = "radio" name = "type"><span class = "radio-text" value = "public">&nbsp;Public</span>
+                <input style = "margin-left:10px" type = "radio" name = "type"><span class = "radio-text" value = "public">&nbsp;Public</span><br><span id="after"></span>
               </div>
               <div class = "form-group">
                 <label>Description</label><br>
-                <textarea name = "description" rows = "5" cols = "3"></textarea>
+                <textarea name = "description" rows = "5" cols = "3" required></textarea>
               </div>
               <div class = "form-group">
                 <label>Tags</label><br>
-                <input style = "width:30%" class = "form-control" type = "text" name = "tag1">
-                <input style = "width:30%" class = "form-control" type = "text" name = "tag2">
-                <input style = "width:30%" class = "form-control" type = "text" name = "tag3">
+                <input style = "width:30%" class = "form-control" type = "text" name = "tag" >
+                <input style = "width:30%" class = "form-control" type = "text" name = "tag">
+                <input style = "width:30%" class = "form-control" type = "text" name = "tag" id= "after1">
               </div>
               <div class = "form-group">
                 <label>Genre</label><br>
@@ -88,5 +88,36 @@
           </div>
         </div>
     </div>
+        <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+        <script>
+        $('#submit').click(() => {
+           $('#channel').valid(); 
+        });
+        
+        $("#channel").validate({
+           rules: {
+               type: {
+                    required: true
+                },
+               tag: {
+                   required: true
+               }
+           },
+            messages: {
+                type: '*Please select one option',
+                tag: 'Please fill the above fields'
+            },
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "type")
+                    error.insertAfter("#after");
+                else if (element.attr("name") == "tag")
+                    error.insertAfter("#after1");
+                else
+                    error.insertAfter(element);
+                
+            }
+        });
+    </script>
   </body>
 </html>
