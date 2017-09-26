@@ -43,12 +43,11 @@
       </div>
     </div>
     <div class = "nav-content">
-      <ul id = "nav-list">
-        <li id = "home"><a style = "color: white" href = "#">Home</a></li>
-        <li id = "mywork"><a style = "color: white" href = "#">My Work</a></li>
-        <li id = "myprofile"><a style = "color: white" href = "#">My Profile</a></li>
-        <li id = "channels"><a style = "color: white" href = "#">Channels</a></li>
-        <li id = "signin"><a style = "color: white" href = "#">Sign In</a></li>
+      <ul>
+        <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+        <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+        <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+        <a href = "#"><li id = "signin">Sign In</li></a>
       </ul>
       <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
     </div>
@@ -96,21 +95,15 @@
         </form>
       </div>
     </div>
-    <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    <script src="js/jquery.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script src="js/jquery_validate.js"></script>
     <script src = "js/index.js"></script>
+    <script src = "js/nav.js"></script>
       <script>
-        $('#login').click(() => {
-           $('#login-form').valid(); 
-        });
-           $('#register').click(() => {
-           $('#register-form').valid(); 
-        });
-          
-        
         $("#login-form").validate({
            errorElement: 'div',
         });
+
         $("#register-form").validate({
            errorElement: 'div',
         });

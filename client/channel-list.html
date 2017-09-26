@@ -7,6 +7,7 @@
     <title>Authored</title>
     <link href = "css/index.css" rel = "stylesheet" type = "text/css">
     <link href = "css/channel.css" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="css/animate.css" type = "text/css">
     <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
   </head>
   <body>
@@ -42,7 +43,7 @@
           <h1 class = "main-heading">Channels</h1>
           <ul class = "utility-box">
             <li><i class = "fa fa-search fa-lg"></i></li>
-            <li><i class = "fa fa-pencil fa-lg"></i></li>
+            <a href = "./create-channel.html"><li><i class = "fa fa-pencil fa-lg"></i></li></a>
           </ul>
          <ul class = "channel-stats">
            <li>
@@ -340,7 +341,7 @@
           </div>
           <div class = "sorting-utility">
             <h4>Sort By <i class = "fa fa-sort-amount-desc fa-4x"></i></h4>
-            <ul>
+            <ul id = "sorting">
               <li>Name</li>
               <li>Rating</li>
               <li>Views</li>
@@ -350,13 +351,63 @@
       </div>
       <div class = "nav-content">
         <ul>
-          <li><a href = "#">Home</a></li>
-          <li><a href = "#">My Work</a></li>
-          <li><a href = "#">My Profile</a></li>
-          <li><a href = "#">Channels</a></li>
-          <li><a href = "#">Sign In</a></li>
+        <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+        <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+        <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+        <li id = "logout">Log Out</li>
         </ul>
         <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
       </div>
+      <script src = "js/jquery.js"></script>
+      <script src = "js/jquery_validate.js"></script>
+      <script src = "js/nav.js"></script>
+      <script>
+        $.ajax({
+          type: 'GET',
+			    contentType: 'application/json',
+          crossDomain: true,
+          beforeSend: (xhr) => {
+            xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+          },
+          url: 'http://localhost:4000/users/me',
+          success: function(data) {
+            console.log('success');
+            console.log(data.responseJSON);
+          },
+          error: function(data) {
+            console.log('error');
+            console.log(data.responseJSON);
+          }
+        });
+
+        function getData(sortBy) {
+          var rootUrl = 'http://localhost:4000/channels/list';
+          if (sortBy)
+            rootUrl = rootUrl + '?sort=' + sortBy;
+          $.ajax({
+            type: 'GET',
+			      contentType: 'application/json',
+            crossDomain: true,
+            beforeSend: (xhr) => {
+              xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+            },
+            url: rootUrl,
+            success: function(data) {
+              console.log('success');
+              console.log(data.responseJSON);
+            },
+            error: function(data) {
+              console.log('error');
+              console.log(data.responseJSON);
+            }
+          });
+        }
+
+        $('#sorting li').click((e) => {
+          getData(e.target.textContent.toLocaleLowerCase());  
+        });
+
+        getData();
+      </script>
   </body>
 </html>

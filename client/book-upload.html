@@ -7,6 +7,7 @@
     <title>Authored</title>
     <link href = "css/index.css" rel = "stylesheet" type = "text/css">
     <link href = "css/book_upload.css" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="css/animate.css" type = "text/css">
     <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
   </head>
   <body>
@@ -56,26 +57,65 @@
             <form id="book-form">
               <div class = "form-group">
                 <label>Name</label><br>
-                <input class = "form-control" type = "text" name = "bookname" required>
+                <input id = "name" class = "form-control" type = "text" name = "bookname" required>
               </div>
                 <div class = "form-group">
                 <label>Author</label><br>
-                <input class = "form-control" type = "text" name = "author" required >
+                <input id = "author" class = "form-control" type = "text" name = "author" required >
               </div>
                 <div class = "form-group" id="content">
                 <label>Content</label><br>
-                <textarea style = "overflow:scroll" required></textarea>
+                <textarea id = "content-text" style = "overflow:scroll" required></textarea>
               </div>
             </form>
           </div>
         </div>
     </div>
-        <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    <div class = "nav-content">
+        <ul>
+          <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+          <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+          <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+          <li id = "logout">Logout</li>
+        </ul>
+        <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
+      </div>
+    <script src = "js/jquery.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script src = "js/jquery_validate.js"></script>
+    <script src = "js/nav.js"></script>
     <script>
         $('#submit').click(() => {
-           $('#book-form').valid(); 
-        });
-        </script>
+        if ($('#book-form').valid()) { 
+          const data = {
+            name: $('#name').val(),
+            author: $('#author').val(),
+            content: $('#content-text').val(),
+          };
+          $.ajax({
+			      type: 'POST',
+			      data: JSON.stringify(data),
+            crossDomain: true,
+            beforeSend: (xhr) => {
+              xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+            },
+			      contentType: 'application/json',
+            url: 'http://localhost:4000/books/create',
+            success: function(data) {
+              console.log('success');
+              alert('Your book has been uploaded!');
+              window.location = "http://localhost:8000/home.html";
+            },
+            error: function(error) {
+              console.log('error');
+              if (error.status === 404) {
+                alert('Book with this name already exists!')
+              } else {
+                alert('There was some error! Please trey again later.')
+              }
+            }
+          });
+        }
+    });
+  </script>
   </body>
 </html>

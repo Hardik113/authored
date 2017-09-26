@@ -7,6 +7,7 @@
     <title>Authored</title>
     <link href = "css/index.css" rel = "stylesheet" type = "text/css">
     <link href = "css/create_profile.css" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="css/animate.css" type = "text/css">
     <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
     <style>  
     </style>
@@ -54,36 +55,36 @@
             <form id = "profile">
               <div class = "form-group">
                 <label>First Name</label><br>
-                <input class = "form-control" type = "text" name = "firstname" value = "Arunav" disabled>
+                <input id = "first_name" class = "form-control" type = "text" name = "firstname" disabled>
               </div>
                 <div class = "form-group">
                 <label>Last Name</label><br>
-                <input class = "form-control" type = "text" name = "lastname" value = "Saxena" disabled>
+                <input id = "last_name" class = "form-control" type = "text" name = "lastname" disabled>
               </div>
                 <div class = "form-group">
                 <label>Email</label><br>
-                <input class = "form-control" type = "email" name = "email" value = "arunavsaxena27@gmail.com" disabled>
+                <input id = "email" class = "form-control" type = "email" name = "email" disabled>
               </div>
-                <div class = "form-group">
+                <!--<div class = "form-group">
                 <label>Password</label><br>
-                <input class = "form-control" type = "password" name = "password" value = "********" disabled>
-              </div>
+                <input id = "password" class = "form-control" type = "password" name = "password" value = "********" disabled>
+              </div>-->
                 <div class = "form-group">
                 <label>Age</label><br>
-                <input class = "form-control" type = "number" name = "age" min="0" max="100">
+                <input id = "age" class = "form-control" type = "number" name = "age" min="0" max="100">
               </div>
               <div class = "form-group">
                 <label>Description</label><br>
-                <textarea name = "description" rows = "5" cols = "3" required></textarea>
+                <textarea id = "desp" name = "description" rows = "5" cols = "3" required></textarea>
               </div>
               <div class = "form-group">
                 <label>Website</label><br>
-                <input class = "form-control" type = "text" name = "website">
+                <input id = "website" class = "form-control" type = "text" name = "website">
               </div>
               <div class = "form-group">
                 <label>Gender</label><br>
-                <input type = "radio" name = "gender"><span class = "radio-text" value = "private">&nbsp;Male</span>
-                <input style = "margin-left:10px" type = "radio" name = "gender"><span class = "radio-text" value = "public">&nbsp;Female</span><input style = "margin-left:10px" type = "radio" name = "gender"><span id = "after" class = "radio-text" value = "public">&nbsp;Other</span>
+                <input type = "radio" name = "gender" value = "male"><span class = "radio-text" value = "private">&nbsp;Male</span>
+                <input style = "margin-left:10px" type = "radio" name = "gender" value = "female"><span class = "radio-text" value = "public">&nbsp;Female</span><input style = "margin-left:10px" type = "radio" name = "gender" value = "other"><span id = "after" class = "radio-text" value = "public">&nbsp;Other</span>
               </div>
             </form>
             <p class = "submit-container-content">By Clicking submit you agree to our terms and conditions</p>
@@ -92,33 +93,93 @@
         </div>
         </div>
     </div>
-    <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    <div class = "nav-content">
+      <ul>
+        <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+        <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+        <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+        <li id = "logout">Log Out</li>
+      </ul>
+      <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
+    </div>
+    <script src="js/jquery.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script src="js/jquery_validate.js"></script>
+    <script src = "js/nav.js"></script>
     <script>
-        $('#submit').click(() => {
-           $('#profile').valid(); 
-        });
-        
-        $("#profile").validate({
-           rules: {
-               age: {
-                   required: true
-               },
-               gender: {
-                    required: true
-                }
-           },
-            messages: {
-                age: '*Please enter your age',
-                gender: '*Please select one option'
+      $.ajax({
+        type: 'GET',
+			    contentType: 'application/json',
+          url: 'http://localhost:4000/users/me',
+          crossDomain: true,
+            beforeSend: (xhr) => {
+              xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+          },
+          success: function(data) {
+            console.log('success');
+            console.log(data);
+            $('#first_name').val(data.first_name);
+            $('#last_name').val(data.last_name);
+            $('#email').val(data.email);
+          },
+          error: function(data) {
+            console.log('error');
+            console.log(data);
+          }
+      });
+
+    $('#submit').click(() => {
+        if($('#profile').valid()) { 
+          const data = {
+            first_name: $('#first_name').val(),
+            last_name: $('#last_name').val(),
+            email: $('#email').val(),
+            age: $('#age').val(),
+            description: $('#desp').val(),
+            gender: $('[type="radio"]').val(),
+            website: $('#website').val()
+          };
+          $.ajax({
+			      type: 'PUT',
+			      data: JSON.stringify(data),
+			      contentType: 'application/json',
+            crossDomain: true,
+            beforeSend: (xhr) => {
+              xhr.setRequestHeader("authorization", localStorage.getItem('token'));
             },
-            errorPlacement: function(error, element) {
-                if (element.attr("name") == "gender" )
-                    error.insertAfter("#after");
-                else
-                    error.insertAfter(element);
+            url: 'http://localhost:4000/users/profile',
+            success: function(data) {
+              console.log('success');
+              alert('Your profile has been updated!');
+              window.location = 'http://localhost:8000/home.html';
+            },
+            error: function(data) {
+              console.log('error');
+              console.log(data);
+              alert('There was some error! Please try again.')
             }
-        });
+          });
+        }
+    });
+    $("#profile").validate({
+      rules: {
+        age: {
+          required: true
+        },
+        gender: {
+          required: true
+        }
+      },
+      messages: {
+        age: '*Please enter your age',
+        gender: '*Please select one option'
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "gender" )
+          error.insertAfter("#after");
+        else
+          error.insertAfter(element);
+        }
+      });
     </script>
   </body>
 </html>

@@ -102,7 +102,7 @@ a {
   padding: 0;
   padding: 1% 4%;
   padding-bottom: 0;
-  margin-bottom: 10%;
+  margin-bottom: 14%;
 }
 
 .nav-content ul li {
@@ -110,6 +110,7 @@ a {
   font-family: sf_pro;
   font-weight: lighter;
   color: white;
+  cursor: pointer;
 }
 
 #nav-symbol {

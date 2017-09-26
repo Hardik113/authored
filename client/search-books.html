@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Authored</title>
+    <link href = "css/index.css" rel = "stylesheet" type = "text/css">
+    <link href = "css/book-search.css" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="css/animate.css" type = "text/css">
+    <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
+
+  </head>
+  <body>
+    <div class = "nav-container">
+      <div class = "sub-nav-1">
+        <div class = "nav-button">
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+        </div>
+      </div>
+      <div class = "sub-nav-2">
+        <ul class = "social-links">
+          <li class = "link" id = "facebook">
+            <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "insta">
+            <i class="fa fa-instagram fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "spapchat">
+            <i class="fa fa-snapchat fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "twitter">
+            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--<img class = "symbol" src = "resources/authored.png">-->
+    <div class = "main-page">
+      <div class = "main-page-content">
+        <div class = "header-content">
+          <h1 class = "main-heading">Search Results</h1>
+          <ul class = "utility-box">
+            <li id = "search-open"><i class = "fa fa-search fa-lg"></i></li>
+            <a href = "http://localhost:8000/book-upload.html"><li><i class = "fa fa-pencil fa-lg"></i></li></a>
+          </ul>
+        </div>
+        <div class = "sorting-utility">
+          <h4>Sort By <i class = "fa fa-sort-amount-desc fa-4x"></i></h4>
+          <ul id = "sorting">
+            <li>Name</li>
+            <li>Genre</li>
+            <li>Rating</li>
+            <li>Views</li>
+            <li>Likes</li>
+          </ul>
+        </div>
+        <div class = "main-page-row">
+          <div class = "row-container">
+            <div id = "search-list" class = "row-content">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class = "nav-content">
+      <ul>
+        <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+        <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+        <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+        <li id = "logout">Log Out</li>
+      </ul>
+      <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
+    </div>
+    <div class = "search-container">
+        <span class = "search-close">&times;</span>
+        <h6 id="anything"> Search on your fingertips</h6>
+        <form id = "search-form">
+          <input id = "search" class = "search-box" type = "text" name = "search" placeholder = "SEARCH">
+          <input id = "search-submit" type = "submit" hidden>
+      </form>
+    </div>
+    <script src = "js/jquery.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script src = "js/nav.js"></script>
+    <script>
+      function search(value) {
+        $.ajax({
+			    type: 'GET',
+			    contentType: 'application/json',
+          url: 'http://localhost:4000/books/list?search='+value,
+          crossDomain: true,
+          beforeSend: (xhr) => {
+            xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+          },
+          success: function(data) {
+            console.log('success');
+            console.log(data);
+            for(var i = 0;i < data.count; i++) {
+              var star_rating = '';
+              for (var j = 0;j < data.resArr[i].rating; j++) {
+                star_rating += '<li><i class = "fa fa-star fa-md"></i></li>';
+              }
+              const html = 
+              `<div id = "${data.resArr[i]._id}" class= "row-box">
+                  <div class = "book-cover">
+                    <img src = "resources/book.jpg">
+                    <div class = "cover-content">
+                      <h4>${data.resArr[i].name}</h4>
+                      <h5><span class = "small-text">By </span>${data.resArr[i].author}</h5>
+                    </div>
+                    <div class = "rating-box">
+                      <ul class = "star-rating">
+                        ${star_rating}  
+                      </ul>
+                      <p class = "views">${data.resArr[i].views} Views</p>
+                    </div>
+                  </div>
+                </div>`;
+                $('#search-list').append(html);
+            }
+          },
+          error: function(data) {
+            console.log('error');
+            console.log(data);
+          }
+        });
+      }
+
+      $('.search-close').click(() => {
+        $('.search-container').css('display', 'none');
+      });
+
+      $('#search-open').click(() => {
+        $('.search-container').css('display', 'block');
+      });
+
+      $('#sorting li').click((e) => {
+        getData(e.target.textContent.toLocaleLowerCase());  
+      });
+
+      var searchText = getUrlParameter('search');
+      
+      search(searchText);
+
+      function getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+        for (i = 0; i < sURLVariables.length; i++) {
+          sParameterName = sURLVariables[i].split('=');
+          if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

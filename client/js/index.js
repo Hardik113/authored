@@ -1,6 +1,7 @@
 $(document).ready(() => {
   $('#register').click((e) => {
     e.preventDefault();
+    if($('#register-form').valid()) {
     const data = {
       first_name: $('#firstname').val(),
       last_name: $('#lastname').val(),
@@ -14,17 +15,24 @@ $(document).ready(() => {
       url: 'http://localhost:4000/users/register',
       success: function(data) {
         console.log('success');
-        console.log(data.responseJSON);
+        alert('User has been sent an email which contains the verification link');
+        localStorage.setItem('token', data.token);
+        window.location = "http://localhost:8000/create-profile.html";
       },
-      error: function(data) {
+      error: function(error) {
         console.log('error');
-        console.log(data.responseJSON);
+        if(error.status === 409) {
+          alert('User already exist');
+        }
       }
     });
+    }
   });
 
   $('#login').click((e) => {
     e.preventDefault();
+    
+    if($('#login-form').valid()) {
     const data = {
       email: $('#log-email').val(),
       password: $('#log-password').val(),
@@ -36,13 +44,18 @@ $(document).ready(() => {
       url: 'http://localhost:4000/users/login',
       success: function(data) {
         console.log('success');
-        console.log(data.responseJSON);
+        console.log(data);
+        localStorage.setItem('token', data.token);
+        window.location = 'http://localhost:8000/home.html';
       },
-      error: function(data) {
+      error: function(error) {
         console.log('error');
-        console.log(data.responseJSON);
+        if(error.status === 404) {
+          alert('User Not found');
+        }
       }
     });
+    }
   });
 
   $('#sign-in').click(() => {
@@ -68,24 +81,4 @@ $(document).ready(() => {
   $('.close').click(() => {
     $('.onboard-container').css('display','none');
   });
-
-  $('.nav-button').click(() => {
-    const nav_con = $('.nav-content');
-    if (nav_con.css('display') === 'none') {
-      nav_con.css({
-        'display': 'block',
-        'animation':'bounceInLeft 1s'
-      });
-    } else {
-      nav_con.css('animation','bounceOutLeft 1s');
-      setTimeout(function () {
-        nav_con.css('display', 'none');;
-      }, 800);
-    }
-  });
-
-  $('#signin').click(() => {
-    $('.onboard-container').css('display', 'flex');
-  });
-
 });

@@ -7,6 +7,7 @@
     <title>Authored</title>
     <link href = "css/index.css" rel = "stylesheet" type = "text/css">
     <link href = "css/create_channel.css" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="css/animate.css" type = "text/css">
     <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
   </head>
   <body>
@@ -52,26 +53,26 @@
             <form id="channel">
               <div class = "form-group">
                 <label>Name</label><br>
-                <input class = "form-control" type = "text" name = "channelname" required>
+                <input id = "name" class = "form-control" type = "text" name = "channelname" required>
               </div>
               <div class = "form-group">
                 <label>Type</label><br>
-                <input type = "radio" name = "type"><span class = "radio-text" value = "private">&nbsp;Private</span>
-                <input style = "margin-left:10px" type = "radio" name = "type"><span class = "radio-text" value = "public">&nbsp;Public</span><br><span id="after"></span>
+                <input type = "radio" name = "type" value = "private"><span class = "radio-text" value = "private">&nbsp;Private</span>
+                <input style = "margin-left:10px" type = "radio" name = "type" value = "public"><span class = "radio-text" value = "public">&nbsp;Public</span><br><span id="after"></span>
               </div>
               <div class = "form-group">
                 <label>Description</label><br>
-                <textarea name = "description" rows = "5" cols = "3" required></textarea>
+                <textarea id = "desp" name = "description" rows = "5" cols = "3" required></textarea>
               </div>
               <div class = "form-group">
                 <label>Tags</label><br>
-                <input style = "width:30%" class = "form-control" type = "text" name = "tag" >
-                <input style = "width:30%" class = "form-control" type = "text" name = "tag">
-                <input style = "width:30%" class = "form-control" type = "text" name = "tag" id= "after1">
+                <input style = "width:30%" class = "form-control tag" type = "text" name = "tag" >
+                <input style = "width:30%" class = "form-control tag" type = "text" name = "tag">
+                <input style = "width:30%" class = "form-control tag" type = "text" name = "tag" id= "after1">
               </div>
               <div class = "form-group">
                 <label>Genre</label><br>
-                <select>
+                <select id = "genre">
                   <option value = "fiction">Fiction</option>
                   <option value = "non-fiction">Non-Fiction</option>
                   <option value = "horror">Horror</option>
@@ -88,35 +89,73 @@
           </div>
         </div>
     </div>
-        <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
-        <script>
+    <div class = "nav-content">
+      <ul>
+        <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+        <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+        <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+        <li id = "logout">Log Out</li>
+      </ul>
+      <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
+    </div>
+    <script src="js/jquery.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script src="js/jquery_validate.js"></script>
+    <script src = "js/nav.js"></script>
+    <script>
         $('#submit').click(() => {
-           $('#channel').valid(); 
-        });
-        
+          if ($('#channel').valid()) {
+            const data = {
+              name: $('#name').val(),
+              description: $('#desp').val(),
+              type: $('[name="type"]').val(),
+              tags: $('.tag').val(),
+              genre: $('#genre').val()
+           };
+          $.ajax({
+            type: 'POST',
+			      data: JSON.stringify(data),
+            crossDomain: true,
+            beforeSend: (xhr) => {
+              xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+            },
+			      contentType: 'application/json',
+            url: 'http://localhost:4000/channels/create',
+            success: function(data) {
+              console.log('success');
+              alert('Your channel has been created');
+            },
+            error: function(error) {
+              console.log('error');
+              if (error.status === 404){
+                alert('This channel already exist!');
+              } else {
+                alert('There was some error! Please try again.');
+              }
+            }
+          });
+          }
+        });       
         $("#channel").validate({
            rules: {
                type: {
-                    required: true
-                },
-               tag: {
-                   required: true
-               }
+                required: true
+              },
+              tag: {
+                required: true
+              }
            },
             messages: {
-                type: '*Please select one option',
-                tag: 'Please fill the above fields'
+              type: '*Please select one option',
+              tag: 'Please fill the above fields'
             },
             errorPlacement: function(error, element) {
-                if (element.attr("name") == "type")
-                    error.insertAfter("#after");
-                else if (element.attr("name") == "tag")
-                    error.insertAfter("#after1");
-                else
-                    error.insertAfter(element);
-                
-            }
+              if (element.attr("name") == "type")
+                error.insertAfter("#after");
+              else if (element.attr("name") == "tag")
+                error.insertAfter("#after1");
+              else
+                error.insertAfter(element);
+              }
         });
     </script>
   </body>
