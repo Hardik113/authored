@@ -152,7 +152,7 @@ function list(query) {
     const limit = (parseInt(query.limit, 10)) ? parseInt(query.limit, 10) : 25;
 
     let filter = query.filter;
-    if (query.filter === 'views' || query.filter === 'likes') {
+    if (query.filter === 'createdAt') {
       filter = `-${query.filter}`;
     }
     let search = {};

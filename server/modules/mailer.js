@@ -1,4 +1,3 @@
-const helper = require('sendgrid').mail;
 const Promise = require('bluebird');
 const fs = require('fs');
 const path = require('path');
@@ -63,7 +62,7 @@ module.exports = function send(req) {
         });
         sg.API(request, (error) => {
           if (error) {
-            console.log(error.response.body);
+            console.log(error);
             reject({ status: 400, data: { message: 'Not Working' } });
           } else {
             resolve({ status: 200, data: { message: 'Message Sent' } });
@@ -71,6 +70,7 @@ module.exports = function send(req) {
         });
       })
       .catch((error) => {
+        console.log(error);
         reject({ status: 400, data: { message: error.message } });
       });
   });

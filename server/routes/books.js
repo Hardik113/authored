@@ -5,7 +5,7 @@ const Auth = require('../modules/auth');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/list', (req, res) => {
   Auth.authorize(req.session)
     .then(() => {
       return BookController.list(req.query);

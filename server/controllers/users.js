@@ -63,7 +63,7 @@ function getEmailInfo(user) {
     subject: 'Welcome to Authored!!',
     data: {
       name: user.name,
-      link: `${config.ui.host}onboarding?token=${jwt.sign({ _id: user._id, type: 'login' }, config.secret, { expiresIn: '1d' })}`,
+      link: `http://localhost:8000/profile.html?token=${jwt.sign({ _id: user._id, type: 'login' }, config.secret, { expiresIn: '1d' })}`,
     },
   };
   return emailInfo;
@@ -155,13 +155,15 @@ function register(req) {
         const emailInfo = getEmailInfo(user);
         mailer(emailInfo)
           .then((ret) => {
-            resolve({ status: 200, data: { user_id: user._id, message: ret.message } });
+            resolve({ status: 200, data: { user_id: user._id, token: jwt.sign({ user_id: user._id, type: 'login' }, config.secret), message: ret.message } });
           })
           .catch((error) => {
+            console.log(error);
             reject({ status: 400, data: { message: error.message } });
           });
       })
       .catch((error) => {
+        console.log(error);
         reject({ status: error.status, data: { message: error.message } });
       });
   });
@@ -214,6 +216,16 @@ function me(req) {
     }
     resolve({ status: 200, data: user });
   });
+    // User.findById(req.session.user._id)
+    //   .populate('my_publishing')
+    //   .populate('my_channels')
+    //   .populate('my_favourite')
+    //   .exec((err, user) => {
+    //     resolve({ status: 200, data: user });
+    //   })
+    //   .catch((error) => {
+    //     reject({ status: error.status, data: { message: error.message } });
+    //   });
 }
 
 // function listUsers(query) {

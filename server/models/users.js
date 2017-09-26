@@ -13,7 +13,7 @@ const userSchema = new Schema({
   status: {
     type: String,
     enum: ['active', 'inactive', 'new'],
-    default: 'new',
+    default: 'active',
   },
   description: { type: String },
   my_publishing: [{ type: Schema.Types.ObjectId, ref: 'book' }],
