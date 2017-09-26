@@ -8,6 +8,8 @@
     <link href = "css/index.css" rel = "stylesheet" type = "text/css">
     <link href = "css/create_profile.css" rel = "stylesheet" type = "text/css">
     <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
+    <style>  
+    </style>
   </head>
   <body>
     <div class = "nav-container">
@@ -49,7 +51,7 @@
             <p><i class = "fa fa-camera fa-lg"></i> Edit Picture</p>
           </div>
           <div style = "text-align: left" class = "form-container">
-            <form>
+            <form id = "profile">
               <div class = "form-group">
                 <label>First Name</label><br>
                 <input class = "form-control" type = "text" name = "firstname" value = "Arunav" disabled>
@@ -68,11 +70,11 @@
               </div>
                 <div class = "form-group">
                 <label>Age</label><br>
-                <input class = "form-control" type = "number" name = "age">
+                <input class = "form-control" type = "number" name = "age" min="0" max="100">
               </div>
               <div class = "form-group">
                 <label>Description</label><br>
-                <textarea name = "description" rows = "5" cols = "3"></textarea>
+                <textarea name = "description" rows = "5" cols = "3" required></textarea>
               </div>
               <div class = "form-group">
                 <label>Website</label><br>
@@ -81,7 +83,7 @@
               <div class = "form-group">
                 <label>Gender</label><br>
                 <input type = "radio" name = "gender"><span class = "radio-text" value = "private">&nbsp;Male</span>
-                <input style = "margin-left:10px" type = "radio" name = "type"><span class = "radio-text" value = "public">&nbsp;Female</span><input style = "margin-left:10px" type = "radio" name = "type"><span class = "radio-text" value = "public">&nbsp;Other</span>
+                <input style = "margin-left:10px" type = "radio" name = "gender"><span class = "radio-text" value = "public">&nbsp;Female</span><input style = "margin-left:10px" type = "radio" name = "gender"><span id = "after" class = "radio-text" value = "public">&nbsp;Other</span>
               </div>
             </form>
             <p class = "submit-container-content">By Clicking submit you agree to our terms and conditions</p>
@@ -90,5 +92,33 @@
         </div>
         </div>
     </div>
+    <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    <script>
+        $('#submit').click(() => {
+           $('#profile').valid(); 
+        });
+        
+        $("#profile").validate({
+           rules: {
+               age: {
+                   required: true
+               },
+               gender: {
+                    required: true
+                }
+           },
+            messages: {
+                age: '*Please enter your age',
+                gender: '*Please select one option'
+            },
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "gender" )
+                    error.insertAfter("#after");
+                else
+                    error.insertAfter(element);
+            }
+        });
+    </script>
   </body>
 </html>

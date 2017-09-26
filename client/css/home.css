@@ -29,7 +29,7 @@
 }
 
 .row-box:first-child {
-  margin-left: 0;
+  margin-left: 0%;
 }
 
 .book-cover {
@@ -163,8 +163,16 @@
   width: 100%;
   top: 0;
   left: 0;
-  background: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.95);
   z-index: 200;
+  display: none;
+}
+#anything {
+    margin-top: 2%;
+    margin-left: 4%;
+    font-size: 12px;
+    color: #626262;
+    font-family: sf_pro;
 }
 
 .search-box {
@@ -176,16 +184,25 @@
   padding-bottom: 8px;
   margin: 3%;
   margin-top: 1%;
-  border-bottom: 3px solid #626262;
-  font-style: sf_pro_rg;
-  font-size: 25px;
+  font-style: Arial;
+  font-size: 90px;
   color: #626262;
+    font-weight: bold;
 }
 
 ::placeholder {
-  font-family: sf_pro_reg;
-  text-transform: uppercase;
+  font-family: Arial;
   font-weight: bold;
-  font-size: 30px;
-  color: black;
+  font-size: 90px;
+  color: #686868;
+    opacity: 0.2;
+}
+
+.search-close {
+    color: black;
+    font-size: 25px;
+    position: absolute;
+    right: 15px;
+    top: 20px;
+    cursor: pointer;
 }
