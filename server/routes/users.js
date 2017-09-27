@@ -30,6 +30,19 @@ router.get('/me', (req, res) => {
     });
 });
 
+router.get('/me_expanded', (req, res) => {
+  Auth.authorize(req.session)
+    .then(() => {
+      return UserController.me_expanded(req);
+    })
+    .then((result) => {
+      res.status(200 || result.status).send(result.data);
+    })
+    .catch((error) => {
+      res.status(error.status).send(error.data);
+    });
+});
+
 router.post('/add_favourite', (req, res) => {
   Auth.authorize(req.session)
     .then(() => {

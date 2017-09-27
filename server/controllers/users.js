@@ -216,16 +216,21 @@ function me(req) {
     }
     resolve({ status: 200, data: user });
   });
-    // User.findById(req.session.user._id)
-    //   .populate('my_publishing')
-    //   .populate('my_channels')
-    //   .populate('my_favourite')
-    //   .exec((err, user) => {
-    //     resolve({ status: 200, data: user });
-    //   })
-    //   .catch((error) => {
-    //     reject({ status: error.status, data: { message: error.message } });
-    //   });
+}
+
+function me_expanded(req) {
+  return new Promise((resolve, reject) => {
+    User.findById(req.session.user._id)
+      .populate('my_publishing')
+      .populate('my_channels')
+      .populate('my_favourite')
+      .exec((err, user) => {
+        resolve({ status: 200, data: user });
+      })
+      .catch((error) => {
+        reject({ status: error.status, data: { message: error.message } });
+      });
+  });
 }
 
 // function listUsers(query) {
@@ -363,5 +368,6 @@ services.makeProfile = makeProfile;
 services.getUser = getUser;
 services.removeUser = removeUser;
 services.addFavourite = addFavourite;
+services.me_expanded = me_expanded;
 
 module.exports = services;
