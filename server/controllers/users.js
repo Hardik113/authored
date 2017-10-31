@@ -37,7 +37,7 @@ function get(_id) {
 
 function verifyPassword(password, hash) {
   return new Promise((resolve, reject) => {
-    if (bcrypt.compareSync(password, hash)) {
+    if (!bcrypt.compareSync(password, hash)) {
       return resolve();
     }
     reject({ status: 404, data: { massage: 'Credentials provided are not correct' } });

@@ -70,7 +70,13 @@ function getBook(req) {
           reject({ status: 400, data: { message: 'Book not found' } });
           return false;
         }
-        resolve({ status: 200, data: result });
+        result.views = result.views + 1;
+        result.save((err, book) => {
+          if (err) {
+            reject({ status: 422, data: { message: err.message } });
+          }
+          resolve({ status: 200, data: book });
+        });
       })
       .catch((error) => {
         reject({ status: error.status, data: { message: error.message } });
@@ -153,6 +159,9 @@ function list(query) {
 
     let filter = query.filter;
     if (query.filter === 'createdAt') {
+      filter = `-${query.filter}`;
+    }
+    if (query.filter === 'rating') {
       filter = `-${query.filter}`;
     }
     let search = {};
