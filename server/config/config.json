@@ -21,7 +21,6 @@
     "secret": "This is my secret",
     "resetLink": "http://localhost:3000/users/reset-password",
     "create_member_profile_link": " ",
-    "SENDGRID_API": "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",
     "s3": {
       "access_key_id": "AKIAI2OQAOSH55R6OOOA",
       "access_key_secret": "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",
