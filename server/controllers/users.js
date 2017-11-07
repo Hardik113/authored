@@ -14,6 +14,7 @@ const services = {};
 
 function find(query) {
   return new Promise((resolve, reject) => {
+    console.log(query)
     User.find(query, (err, result) => {
       if (err) {
         return reject({ status: 422, data: { message: err.message } });
@@ -37,7 +38,7 @@ function get(_id) {
 
 function verifyPassword(password, hash) {
   return new Promise((resolve, reject) => {
-    if (!bcrypt.compareSync(password, hash)) {
+    if (bcrypt.compareSync(password, hash)) {
       return resolve();
     }
     reject({ status: 404, data: { massage: 'Credentials provided are not correct' } });
@@ -89,21 +90,17 @@ function addUser(data) {
 
 function login(req) {
   return new Promise((resolve, reject) => {
-    if (req.body.user_name && !req.body.password) {
-      return reject({ status: 400, data: { message: 'Invalid Request' } });
-    }
+    console.log(req.body)
+    
     if (req.body.email && !req.body.password) {
       return reject({ status: 400, data: { message: 'Invalid Request' } });
     }
     const query = {};
     let user = null;
-    if (utils.validateEmail(req.body.user_name)) {
-      query.email = req.body.user_name;
-    } else {
-      query.user_name = req.body.user_name;
-    }
+    query.email = req.body.email;
     find(query)
       .then((result) => {
+        console.log(result)
         if (!result.length) {
           return reject({ status: 404, data: { message: 'user not found' } });
         }

@@ -45,17 +45,7 @@
             <li id = "search-open"><i class = "fa fa-search fa-lg"></i></li>
             <a href = "http://localhost:8000/book-upload.html"><li><i class = "fa fa-pencil fa-lg"></i></li></a>
           </ul>
-          <p class = "main-text">Dive into the mind of our Authors and see the world through their eyes and experience a new age of internet writing. Thoda aur content</p>
-        </div>
-        <div class = "sorting-utility">
-          <h4>Sort By <i class = "fa fa-sort-amount-desc fa-4x"></i></h4>
-          <ul id = "sorting">
-            <li>Name</li>
-            <li>Genre</li>
-            <li>Rating</li>
-            <li>Views</li>
-            <li>Likes</li>
-          </ul>
+          <p class = "main-text">Dive into the mind of our Authors and see the world through their eyes and experience a new age of internet writing.</p>
         </div>
         <div class = "main-page-row">
           <h2>Trending</h2>
@@ -103,9 +93,9 @@
     <script src = "js/jquery.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
     <script src = "js/nav.js"></script>
     <script>
-      var trendingUrl = 'http://localhost:4000/books/list?filter=createdAt&limit=5';
+      var trendingUrl = 'http://localhost:4000/books/list?filter=views&limit=5';
       var freshUrl = 'http://localhost:4000/books/list?filter=createdAt&limit=5';
-      var mostRatedUrl = 'http://localhost:4000/books/list?filter=likes&limit=5';
+      var mostRatedUrl = 'http://localhost:4000/books/list?filter=rating&limit=5';
 
       $.ajax({
 			  type: 'GET',
@@ -171,7 +161,7 @@
                 <div class = "book-cover">
                   <img src = "resources/book.jpg">
                   <div class = "cover-content">
-                    <h4>${data.resArr[i].name}</h4>
+                    <h4><a style = "color:white" href = "./book-view.html?book_id=${data.resArr[i]._id}">${data.resArr[i].name}</a></h4>
                     <h5><span class = "small-text">By </span>${data.resArr[i].author}</h5>
                   </div>
                   <div class = "rating-box">
@@ -211,7 +201,7 @@
                 <div class = "book-cover">
                   <img src = "resources/book.jpg">
                   <div class = "cover-content">
-                    <h4>${data.resArr[i].name}</h4>
+                    <h4><a style = "color:white" href = "./book-view.html?book_id=${data.resArr[i]._id}">${data.resArr[i].name}</a></h4>
                     <h5><span class = "small-text">By </span>${data.resArr[i].author}</h5>
                   </div>
                   <div class = "rating-box">

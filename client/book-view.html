@@ -68,6 +68,7 @@
           const html =
           `<img class = "book" style = "float:right" src = "resources/book.jpg">
           <p id="t1"><i>${data.name}</i></p>
+          <button class="add_favorite" onclick="alertMe()">Add to favorite</button>
           <p id="t2">By <strong>${data.author}</strong></p>
           <p class = "p1">${data.content}</p>`;
 
@@ -93,6 +94,32 @@
             return sParameterName[1] === undefined ? true : sParameterName[1];
           }
         }
+      }
+      
+      function alertMe() {
+        const data = {
+          book_id: getUrlParameter('book_id')
+        }
+        $.ajax({
+			      type: 'POST',
+			      data: JSON.stringify(data),
+			      contentType: 'application/json',
+            crossDomain: true,
+            beforeSend: (xhr) => {
+              xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+            },
+            url: 'http://localhost:4000/users/add_favourite',
+            success: function(data) {
+              console.log('success');
+              alert('Your profile has been updated!');
+              // window.location = 'http://localhost:8000/home.html';
+            },
+            error: function(data) {
+              console.log('error');
+              console.log(data);
+              alert('There was some error! Please try again.')
+            }
+          });
       }
     </script>
 </body>

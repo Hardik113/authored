@@ -164,6 +164,9 @@ function list(query) {
     if (query.filter === 'rating') {
       filter = `-${query.filter}`;
     }
+    if (query.filter === 'views') {
+      filter = `-${query.filter}`;
+    }
     let search = {};
     if (query.search) {
       search = {
