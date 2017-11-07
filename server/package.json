@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.96.0",
+    "bcrypt": "^1.0.3",
     "bcryptjs": "^2.1.0",
     "bluebird": "^3.5.0",
     "body-parser": "~1.17.1",

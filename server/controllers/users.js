@@ -155,12 +155,10 @@ function register(req) {
             resolve({ status: 200, data: { user_id: user._id, token: jwt.sign({ user_id: user._id, type: 'login' }, config.secret), message: ret.message } });
           })
           .catch((error) => {
-            console.log(error);
             reject({ status: 400, data: { message: error.message } });
           });
       })
       .catch((error) => {
-        console.log(error);
         reject({ status: error.status, data: { message: error.message } });
       });
   });
