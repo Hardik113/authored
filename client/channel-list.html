@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Authored</title>
+    <link href = "css/index.css" rel = "stylesheet" type = "text/css">
+    <link href = "css/channel.css" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="css/animate.css" type = "text/css">
+    <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
+  </head>
+  <body>
+    <div class = "nav-container">
+      <div class = "sub-nav-1">
+        <div class = "nav-button">
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+        </div>
+      </div>
+      <div class = "sub-nav-2">
+        <ul class = "social-links">
+          <li class = "link" id = "facebook">
+            <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "insta">
+            <i class="fa fa-instagram fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "spapchat">
+            <i class="fa fa-snapchat fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "twitter">
+            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <img class = "symbol" src = "resources/authored.png">
+    <div class = "main-page">
+      <div class = "main-page-content">
+        <div class = "header-content">
+          <h1 class = "main-heading">Channels</h1>
+          <ul class = "utility-box">
+            <li><i class = "fa fa-search fa-lg"></i></li>
+            <a href = "./create-channel.html"><li><i class = "fa fa-pencil fa-lg"></i></li></a>
+          </ul>
+         <ul class = "channel-stats">
+           <li>
+             <p class = "stats-number">100+</p>
+             <p class = "stats-text">authors</p>
+           </li>
+            <li>
+             <p class = "stats-number">50+</p>
+             <p class = "stats-text">channels</p>
+           </li>
+            <li>
+             <p class = "stats-number">500+</p>
+             <p class = "stats-text">stories</p>
+           </li>
+         </ul>
+        </div>
+        <div class = "main-page-row">
+          <h2>All Channels</h2>
+          <div class = "row-container-list">
+            <div id = "all_channels" class = "row-content-list">
+            
+            </div>
+          </div>
+      </div>
+      <div class = "nav-content">
+        <ul>
+        <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+        <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+        <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+        <li id = "logout">Log Out</li>
+        </ul>
+        <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
+      </div>
+      <script src = "js/jquery.js"></script>
+      <script src = "js/jquery_validate.js"></script>
+      <script src = "js/nav.js"></script>
+      <script>
+        function getData(sortBy) {
+          var rootUrl = 'http://localhost:4000/channels/list';
+          if (sortBy)
+            rootUrl = rootUrl + '?sort=' + sortBy;
+          $.ajax({
+            type: 'GET',
+			      contentType: 'application/json',
+            crossDomain: true,
+            beforeSend: (xhr) => {
+              xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+            },
+            url: rootUrl,
+            success: function(data) {
+              console.log('success');
+          for(var i = 0;i < data.count; i++) {
+            var star_rating = '';
+            for (var j = 0;j < data.resArr[i].rating; j++) {
+              star_rating += '<li><i class = "fa fa-star fa-md"></i></li>';
+            }
+            const html = 
+            `<div id = "${data.resArr[i]._id}" class = "row-box">
+                <div class = "channel-cover">
+                  <img src = "resources/author.jpg">
+                </div>
+                <div class = "channel-content">
+                  <p class = "channel-name">${data.resArr[i].name}</p>
+                  <div class = "rating-box">
+                    <ul class = "star-rating">
+                      ${star_rating}
+                    </ul>
+                  </div>
+                    <p class = "likes"><i class = "fa fa-thumbs-up fa-lg"></i> ${data.resArr[i].likes}</p>
+                    <p class = "views">${data.resArr[i].views} Views</p>
+                </div>
+              </div>`;
+              $('#all_channels').append(html);
+          }
+        },
+        error: function(data) {
+          console.log('error');
+          console.log(data);
+        }
+          });
+        }
+
+        $('#sorting li').click((e) => {
+          getData(e.target.textContent.toLocaleLowerCase());  
+        });
+
+        getData();
+      </script>
+  </body>
+</html>

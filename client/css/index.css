@@ -1,0 +1,132 @@
+@font-face {
+  font-family: sf_pro;
+  src: url('./SF-Pro-Display-Thin.otf');
+}
+
+@font-face {
+  font-family: sf_pro_reg;
+  src: url('./SF-Pro-Display-Regular.otf');
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.nav-container {
+  position: fixed;
+  display: table;
+  width: 7%;
+  margin: 0;
+  height: 100%;
+}
+
+.sub-nav-1 {
+  background: #2c3339;
+  overflow: hidden;
+  height: 50%;
+  position: relative;
+}
+
+.sub-nav-2 {
+  background: #ededed;
+  overflow: hidden;
+  height: 50%;
+}
+
+.nav-button {
+  width: 40%;
+  margin: 0 auto;
+  margin-top: 40%;
+  margin-bottom: 60%;
+  cursor: pointer;
+}
+
+.nav-bar {
+  margin: 4px 0;
+  display: block;
+  padding: 2px;
+  width: 100%;
+  background: #ffffff;
+}
+
+.social-links {
+  width: 100%;
+  list-style-type: none;
+  padding: 0;
+  text-align: center;
+  margin-top: 250px;
+}
+
+.link {
+  margin: 15% 0;
+}
+
+.link i {
+  color: #2c3339;
+  font-size: 25px;
+}
+
+.main-page {
+  margin-left: 7%;
+  overflow: hidden;
+}
+
+.main-page-content {
+  position: relative;
+  margin-left: 5%;
+}
+
+.nav-content {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 6.9%;
+  width: 93%;
+  background: #2c3339;
+  display: none;
+  animation: bounceInLeft 1s;
+}
+
+.nav-content ul {
+  margin-top: 2%;
+  list-style-type: none;
+  padding: 0;
+  padding: 1% 4%;
+  padding-bottom: 0;
+  margin-bottom: 14%;
+}
+
+.nav-content ul li {
+  font-size: 40px;
+  font-family: sf_pro;
+  font-weight: lighter;
+  color: white;
+  cursor: pointer;
+}
+
+#nav-symbol {
+  opacity: 1;
+  margin-top: 2%;
+}
+
+.symbol {
+  height: 15%;
+  width: auto;
+  position: absolute;
+  right: 5%;
+  top: 15%;
+}
+
+.nav-content-open {
+  display: block;
+}
+

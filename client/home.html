@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Authored</title>
+    <link href = "css/index.css" rel = "stylesheet" type = "text/css">
+    <link href = "css/home.css" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="css/animate.css" type = "text/css">
+    <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
+  </head>
+  <body>
+    <div class = "nav-container">
+      <div class = "sub-nav-1">
+        <div class = "nav-button">
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+        </div>
+      </div>
+      <div class = "sub-nav-2">
+        <ul class = "social-links">
+          <li class = "link" id = "facebook">
+            <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "insta">
+            <i class="fa fa-instagram fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "spapchat">
+            <i class="fa fa-snapchat fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "twitter">
+            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class = "main-page">
+      <div class = "main-page-content">
+        <div class = "header-content">
+          <h1 class = "main-heading">Explore</h1>
+          <ul class = "utility-box">
+            <li id = "search-open"><i class = "fa fa-search fa-lg"></i></li>
+            <a href = "http://localhost:8000/book-upload.html"><li><i class = "fa fa-pencil fa-lg"></i></li></a>
+          </ul>
+          <p class = "main-text"></p>
+        </div>
+        <div class = "main-page-row">
+          <h2>Trending</h2>
+          <div class = "row-container">
+            <div id = "trending" class = "row-content">
+
+            </div>
+          </div>
+        </div>
+        <div class = "main-page-row">
+          <h2>Fresh</h2>
+          <div class = "row-container">
+            <div id = "fresh" class = "row-content">
+
+            </div>
+          </div>
+        </div>
+        <div class = "main-page-row">
+          <h2>Most Rated</h2>
+          <div class = "row-container">
+            <div id = "most-rated"class = "row-content">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class = "nav-content">
+      <ul>
+        <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+        <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+        <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+        <li id = "logout">Log Out</li>
+      </ul>
+      <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
+    </div>
+    <div class = "search-container">
+        <span class = "search-close">&times;</span>
+        <h6 id="anything"> Search on your fingertips</h6>
+      <form id = "search-form">
+        <input id = "search" class = "search-box" type = "text" name = "search" placeholder = "SEARCH">
+        <input id = "search-submit" type = "submit" hidden>
+      </form>
+    </div>
+    <script src = "js/jquery.js"></script>
+    <script src = "js/nav.js"></script>
+    <script>
+      var trendingUrl = 'http://localhost:4000/books/list?filter=views&limit=5';
+      var freshUrl = 'http://localhost:4000/books/list?filter=createdAt&limit=5';
+      var mostRatedUrl = 'http://localhost:4000/books/list?filter=rating&limit=5';
+
+      $.ajax({
+			  type: 'GET',
+			  contentType: 'application/json',
+        url: trendingUrl,
+        crossDomain: true,
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+        },
+        success: function(data) {
+          console.log('success');
+          for(var i = 0;i < data.count; i++) {
+            var star_rating = '';
+            for (var j = 0;j < data.resArr[i].rating; j++) {
+              star_rating += '<li><i class = "fa fa-star fa-md"></i></li>';
+            }
+            const html = 
+            `<div id = "${data.resArr[i]._id}" class= "row-box">
+                <div class = "book-cover">
+                  <img src = "resources/book.jpg">
+                  <div class = "cover-content">
+                    <h4><a style = "color:white" href = "./book-view.html?book_id=${data.resArr[i]._id}">${data.resArr[i].name}</a></h4>
+                    <h5><span class = "small-text">By </span>${data.resArr[i].author}</h5>
+                  </div>
+                  <div class = "rating-box">
+                    <ul class = "star-rating">
+                      ${star_rating}  
+                    </ul>
+                    <p class = "views">${data.resArr[i].views} Views</p>
+                  </div>
+                </div>
+              </div>`;
+              $('#trending').append(html);
+          }
+        },
+        error: function(data) {
+          console.log('error');
+          console.log(data);
+        }
+      });
+
+      $('.book-cover').click((e) => {
+        console.log(e);
+      });
+
+      $.ajax({
+			  type: 'GET',
+			  contentType: 'application/json',
+        url: freshUrl,
+        crossDomain: true,
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+        },
+        success: function(data) {
+          console.log('success');
+          for(var i = 0;i < data.count; i++) {
+            var star_rating = '';
+            for (var j = 0;j < data.resArr[i].rating; j++) {
+              star_rating += '<li><i class = "fa fa-star fa-md"></i></li>';
+            }
+            const html = 
+            `<div id = "${data.resArr[i]._id}" class= "row-box">
+                <div class = "book-cover">
+                  <img src = "resources/book.jpg">
+                  <div class = "cover-content">
+                    <h4><a style = "color:white" href = "./book-view.html?book_id=${data.resArr[i]._id}">${data.resArr[i].name}</a></h4>
+                    <h5><span class = "small-text">By </span>${data.resArr[i].author}</h5>
+                  </div>
+                  <div class = "rating-box">
+                    <ul class = "star-rating">
+                      ${star_rating}  
+                    </ul>
+                    <p class = "views">${data.resArr[i].views} Views</p>
+                  </div>
+                </div>
+              </div>`;
+              $('#fresh').append(html);
+          }
+        },
+        error: function(data) {
+          console.log('error');
+          console.log(data);
+        }
+      });
+
+      $.ajax({
+			  type: 'GET',
+			  contentType: 'application/json',
+        url: mostRatedUrl,
+        crossDomain: true,
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+        },
+        success: function(data) {
+          console.log('success');
+          for(var i = 0;i < data.count; i++) {
+            var star_rating = '';
+            for (var j = 0;j < data.resArr[i].rating; j++) {
+              star_rating += '<li><i class = "fa fa-star fa-md"></i></li>';
+            }
+            const html = 
+            `<div id = "${data.resArr[i]._id}" class= "row-box">
+                <div class = "book-cover">
+                  <img src = "resources/book.jpg">
+                  <div class = "cover-content">
+                    <h4><a style = "color:white" href = "./book-view.html?book_id=${data.resArr[i]._id}">${data.resArr[i].name}</a></h4>
+                    <h5><span class = "small-text">By </span>${data.resArr[i].author}</h5>
+                  </div>
+                  <div class = "rating-box">
+                    <ul class = "star-rating">
+                      ${star_rating}  
+                    </ul>
+                    <p class = "views">${data.resArr[i].views} Views</p>
+                  </div>
+                </div>
+              </div>`;
+              $('#most-rated').append(html);
+          }
+        },
+        error: function(data) {
+          console.log('error');
+          console.log(data);
+        }
+      });
+
+      $('.search-close').click(() => {
+        $('.search-container').css('display', 'none');
+      });
+
+      $('#search-open').click(() => {
+        $('.search-container').css('display', 'block');
+      });
+
+      $('#sorting li').click((e) => {
+          getData(e.target.textContent.toLocaleLowerCase());  
+      });
+
+      $('#search-form').submit((e) => {
+        e.preventDefault();
+        const search = $('#search').val();
+        window.location = 'http://localhost:8000/search-books.html?search='+search;
+      });
+
+      var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+        for (i = 0; i < sURLVariables.length; i++) {
+          sParameterName = sURLVariables[i].split('=');
+          if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

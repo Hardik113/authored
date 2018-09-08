@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Authored</title>
+    <link href = "css/index.css" rel = "stylesheet" type = "text/css">
+    <link href = "css/profile.css" rel = "stylesheet" type = "text/css">
+    <link href = "css/home.css" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
+  </head>
+  <body>
+    <div class = "nav-container">
+      <div class = "sub-nav-1">
+        <div class = "nav-button">
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+        </div>
+      </div>
+      <div class = "sub-nav-2">
+        <ul class = "social-links">
+          <li class = "link" id = "facebook">
+            <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "insta">
+            <i class="fa fa-instagram fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "spapchat">
+            <i class="fa fa-snapchat fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "twitter">
+            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class = "nav-content">
+      <ul>
+        <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+        <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+        <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+        <li id = "logout">Log Out</li>
+      </ul>
+      <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
+    </div>
+    <img class = "symbol" src = "resources/authored.png">
+    <div class = "main-page">
+      <div class = "main-page-content">
+        
+        <div class = "main-page-row">
+          <h2>My Publishings</h2>
+          <div class = "row-container">
+            <div id = "publishing" class = "row-content">
+              
+            </div>
+          </div>
+        </div>
+        <div class = "main-page-row">
+        <h2>My Favorites</h2>
+          <div class = "row-container">
+            <div id = "favourites" class = "row-content">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src = "js/jquery.js"></script>
+    <script src = "js/nav.js"></script>
+    <script>
+       $.ajax({
+			  type: 'GET',
+			  contentType: 'application/json',
+        url: 'http://localhost:4000/users/me_expanded',
+        crossDomain: true,
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+        },
+        success: function(data) {
+          console.log('success');
+          console.log(data);
+          const data_html =
+          `<img id="p1" src="resources/author.jpg">
+          <div class="profile-content">
+          <p class="name">${data.first_name}<br> ${data.last_name}</p>
+          <p class="desc">${data.description}</p>
+          <p class="age"><span class = "bold">Age</span> : ${data.age}</p>
+          <p class="website"><span class = "bold">Website</span> : ${data.website}</p>
+          <p class="gender"><span class = "bold">Gender</span> : ${data.gender}</p>
+          </div>`;
+
+          $('.main-page-content').prepend(data_html);
+
+          for(var i = 0;i < data.my_publishing.length; i++) {
+            var star_rating = '';
+            for (var j = 0;j < data.my_publishing[i].rating; j++) {
+              star_rating += '<li><i class = "fa fa-star fa-md"></i></li>';
+            }
+            const publishing = 
+            `<div id = "${data.my_publishing[i]._id}" class= "row-box">
+                <div class = "book-cover">
+                  <img src = "resources/book.jpg">
+                  <div class = "cover-content">
+                    <h4><a style = "color:white" href = "./book-view.html?book_id=${data.my_publishing[i]._id}">${data.my_publishing[i].name}</a></h4>
+                    <h5><span class = "small-text">By </span>${data.my_publishing[i].author}</h5>
+                  </div>
+                  <div class = "rating-box">
+                    <ul class = "star-rating">
+                      ${star_rating}  
+                    </ul>
+                    <p class = "views">${data.my_publishing[i].views} Views</p>
+                  </div>
+                </div>
+              </div>`;
+              $('#publishing').append(publishing);
+          }
+
+           for(var i = 0;i < data.my_favourite.length; i++) {
+            var star_rating = '';
+            for (var j = 0;j < data.my_favourite[i].rating; j++) {
+              star_rating += '<li><i class = "fa fa-star fa-md"></i></li>';
+            }
+            const favourites = 
+            `<div id = "${data.my_favourite[i]._id}" class= "row-box">
+                <div class = "book-cover">
+                  <img src = "resources/book.jpg">
+                  <div class = "cover-content">
+                    <h4><a style = "color:white" href = "./book-view.html?book_id=${data.my_favourite[i]._id}">${data.my_favourite[i].name}</a></h4>
+                    <h5><span class = "small-text">By </span>${data.my_favourite[i].author}</h5>
+                  </div>
+                  <div class = "rating-box">
+                    <ul class = "star-rating">
+                      ${star_rating}  
+                    </ul>
+                    <p class = "views">${data.my_favourite[i].views} Views</p>
+                  </div>
+                </div>
+              </div>`;
+              $('#favourites').append(favourites);
+          }
+        },
+        error: function(data) {
+          console.log('error');
+          console.log(data);
+        }
+      });
+    </script>
+  </body>
+</html>

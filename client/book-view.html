@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Authored</title>
+    <link href = "css/index.css" rel = "stylesheet" type = "text/css">
+    <link href = "css/book-view.css" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="css/animate.css" type = "text/css">
+    <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
+  </head>
+  <body>
+    <div class = "nav-container">
+      <div class = "sub-nav-1">
+        <div class = "nav-button">
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+        </div>
+      </div>
+      <div class = "sub-nav-2">
+        <ul class = "social-links">
+          <li class = "link" id = "facebook">
+            <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "insta">
+            <i class="fa fa-instagram fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "spapchat">
+            <i class="fa fa-snapchat fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "twitter">
+            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <img class = "symbol" src = "resources/authored.png">
+    <div class = "main-page">
+      <div class = "main-page-content">
+      </div>
+    </div>
+    <div class = "nav-content">
+      <ul>
+        <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+        <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+        <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+        <li id = "logout">Logout</li>
+      </ul>
+      <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
+    </div>
+    <script src = "js/jquery.js"></script> 
+    <script src = "js/jquery_validate.js"></script>
+    <script src = "js/nav.js"></script>
+    <script>
+    function getbook(_id){
+      $.ajax({
+			  type: 'GET',
+        crossDomain: true,
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+        },
+			  contentType: 'application/json',
+        url: 'http://localhost:4000/books/'+_id,
+        success: function(data) {
+          console.log('success');
+          const html =
+          `<img class = "book" style = "float:right" src = "resources/book.jpg">
+          <p id="t1"><i>${data.name}</i></p>
+          <button class="add_favorite" onclick="alertMe()">Add to favorite</button>
+          <p id="t2">By <strong>${data.author}</strong></p>
+          <p class = "p1">${data.content}</p>`;
+
+          $('.main-page-content').append(html);
+        },
+
+        error: function(data) {
+          console.log('error');
+          console.log(data);
+        }
+      });
+    }
+    const _id = getUrlParameter('book_id');
+    getbook(_id);
+    function getUrlParameter(sParam) {
+      var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+        for (i = 0; i < sURLVariables.length; i++) {
+          sParameterName = sURLVariables[i].split('=');
+          if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+          }
+        }
+      }
+      
+      function alertMe() {
+        const data = {
+          book_id: getUrlParameter('book_id')
+        }
+        $.ajax({
+			      type: 'POST',
+			      data: JSON.stringify(data),
+			      contentType: 'application/json',
+            crossDomain: true,
+            beforeSend: (xhr) => {
+              xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+            },
+            url: 'http://localhost:4000/users/add_favourite',
+            success: function(data) {
+              console.log('success');
+              alert('Your profile has been updated!');
+              // window.location = 'http://localhost:8000/home.html';
+            },
+            error: function(data) {
+              console.log('error');
+              console.log(data);
+              alert('There was some error! Please try again.')
+            }
+          });
+      }
+    </script>
+</body>
+</html>

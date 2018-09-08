@@ -1,0 +1,27 @@
+#p1{
+border:2px double grey;
+border-radius:50%;
+padding:40px;
+zoom:20%;
+transform: translateY(-30%);
+}
+
+.profile-content {
+  margin-left: 5%;
+  width: 50%;
+  display: inline-block
+}
+
+.profile-content p {
+  font-family: sf_pro;
+  color: #626262;
+}
+
+.name {
+  font-size: 40px;
+}
+
+.bold {
+  font-family: sf_pro_reg;
+  font-size: 20px;
+}

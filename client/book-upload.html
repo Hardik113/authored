@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Authored</title>
+    <link href = "css/index.css" rel = "stylesheet" type = "text/css">
+    <link href = "css/book_upload.css" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="css/animate.css" type = "text/css">
+    <link rel="stylesheet" href="css/font-css/font-awesome.min.css" type = "text/css">
+  </head>
+  <body>
+    <div class = "nav-container">
+      <div class = "sub-nav-1">
+        <div class = "nav-button">
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+          <span class = "nav-bar"></span>
+        </div>
+      </div>
+      <div class = "sub-nav-2">
+        <ul class = "social-links">
+          <li class = "link" id = "facebook">
+            <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "insta">
+            <i class="fa fa-instagram fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "spapchat">
+            <i class="fa fa-snapchat fa-lg" aria-hidden="true"></i>
+          </li>
+          <li class = "link" id = "twitter">
+            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <img class = "symbol" src = "resources/authored.png">
+    <div class = "main-page">
+      <div class = "main-page-content">
+        <div class = "header-content">
+          <h1 class = "main-heading">Upload Book</h1>
+        </div>
+        <div class = "channel-create-content">
+          <div class = "image-container">
+            <div class = "image-sub-container">
+              <img src = "resources/book.jpg">
+            </div>
+            <p><i class = "fa fa-camera fa-lg"></i> Edit Picture</p>
+            <div class = "submit-container-content">
+              <p>By Clicking submit you agree to our terms and conditions</p>
+              <button id = "submit" type = "submit">Submit</button>
+            </div>
+          </div>
+          <div class = "form-container">
+            <form id="book-form">
+              <div class = "form-group">
+                <label>Name</label><br>
+                <input id = "name" class = "form-control" type = "text" name = "bookname" required>
+              </div>
+                <div class = "form-group">
+                <label>Author</label><br>
+                <input id = "author" class = "form-control" type = "text" name = "author" required >
+              </div>
+                <div class = "form-group" id="content">
+                <label>Content</label><br>
+                <textarea id = "content-text" style = "overflow:scroll" required></textarea>
+              </div>
+            </form>
+          </div>
+        </div>
+    </div>
+    <div class = "nav-content">
+        <ul>
+          <a href = "http://localhost:8000/home.html"><li>Home</li></a>
+          <a href = "http://localhost:8000/profile.html"><li>My Profile</li></a>
+          <a href = "http://localhost:8000/channel-list.html"><li>Channels</li></a>
+          <li id = "logout">Logout</li>
+        </ul>
+        <img id = "nav-symbol" class = "symbol" src = "resources/authored-white.png">
+      </div>
+    <script src = "js/jquery.js"></script>
+    <script src = "js/jquery_validate.js"></script>
+    <script src = "js/nav.js"></script>
+    <script>
+        $('#submit').click(() => {
+        if ($('#book-form').valid()) { 
+          const data = {
+            name: $('#name').val(),
+            author: $('#author').val(),
+            content: $('#content-text').val(),
+          };
+          $.ajax({
+			      type: 'POST',
+			      data: JSON.stringify(data),
+            crossDomain: true,
+            beforeSend: (xhr) => {
+              xhr.setRequestHeader("authorization", localStorage.getItem('token'));
+            },
+			      contentType: 'application/json',
+            url: 'http://localhost:4000/books/create',
+            success: function(data) {
+              console.log('success');
+              alert('Your book has been uploaded!');
+              window.location = "http://localhost:8000/home.html";
+            },
+            error: function(error) {
+              console.log('error');
+              if (error.status === 404) {
+                alert('Book with this name already exists!')
+              } else {
+                alert('There was some error! Please trey again later.')
+              }
+            }
+          });
+        }
+    });
+  </script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+/client/
+/node_modules/
+/reports/
+/.nyc_output/
+/tests/
+/coverage/
+/README.md
+/*.pem
+/*.json
+/*.log
+/Jenkins
